@@ -1,7 +1,5 @@
 const EventsService = {
   getAllEvents(knex) {
-    console.log('getAll:', id)
-
     return knex.select('*').from('motor_ferret_events')
   },
   insertEvent(knex, newEvent) {

@@ -20,8 +20,7 @@ TRUNCATE
     zip
     )
 VALUES
-('Footy National Cup'
-,
+('Footy National Cup',
  '9/1/2021',
  '9/2/2021',
  'RaceWays',
@@ -81,3 +80,30 @@ VALUES
   'MI',
   '48423'
   );
+
+INSERT INTO motor_ferret_users (
+  fullname,
+  username,
+  password,
+  profile_picture,
+  flagged
+    )
+VALUES
+( 'Alvin Alphonse',
+'AlphonseAdvisor',
+'$2a$04$PSXXQcbJm7sOIgbt74GuFu6I0ZLDqeW50LESaMa/zZT1I.wFCz0rm',
+'[placeholder for user image]',
+0
+), 
+( 'Opal Bailey',
+'BaileyBoxer',
+'$2a$04$PSXXQcbJm7sOIgbt74GuFu6I0ZLDqeW50LESaMa/zZT1I.wFCz0rm',
+'[placeholder for user image]',
+0
+), 
+( 'Jeremy Jeremy',
+'CalypsoClover',
+'$2a$04$PSXXQcbJm7sOIgbt74GuFu6I0ZLDqeW50LESaMa/zZT1I.wFCz0rm',
+'[placeholder for user image]',
+1
+);

@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
+const eventsRouter = require('./events/events-router')
 
 const app = express()
 
@@ -15,9 +16,12 @@ app.use(morgan(morganOption))
 app.use(helmet())
 app.use(cors())
 
+
 app.get('/', (req, res) => {
   res.send('Hello, world!')
 })
+
+app.get('/events', eventsRouter)
 
 app.use(function errorHandler(error, req, res, next) {
   let response
@@ -29,6 +33,5 @@ app.use(function errorHandler(error, req, res, next) {
   }
   res.status(500).json(response)
 })
-
 
 module.exports = app

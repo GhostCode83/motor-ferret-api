@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS motor_ferret_events;

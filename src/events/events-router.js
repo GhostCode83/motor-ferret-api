@@ -28,6 +28,7 @@ const serializeEvent = event => ({
 eventsRouter
   .route('/')
   .get((req, res, next) => {
+    console.log('get req body and params', req.body, req.params)
     const knexInstance = req.app.get('db')
     EventsService.getAllEvents(knexInstance)
       .then(events => {
@@ -52,6 +53,7 @@ eventsRouter
       city,
       state,
       zip } = req.body
+
     const newEvent = {
       title,
       date1,
@@ -87,108 +89,108 @@ eventsRouter
       .catch(next)
   })
 
-eventsRouter
-  .route('/:event_id')
-  .all((req, res, next) => {
-    console.log(2, req)
+// eventsRouter
+//   .route('/:event_id')
+//   .all((req, res, next) => {
+//     console.log(2, req.params.event_id)
 
-    EventsService.getById(
-      req.app.get('db'),
-      Number(req.params.event_id)
-    )
-      .then(event => {
-        if (!event) {
-          return res.status(404).json({
-            error: { message: `Event doesn't exist` }
-          })
-        }
-        res.event = event // save the event for the next middleware
-        next() // don't forget to call next so the next middleware happens!
-      })
-      .catch(next)
-  })
-  .get((req, res, next) => {
-    res.json({
-      id: res.event.id,
-      title: xss(res.event.title),
-      date1: res.event.date1,
-      date2: res.event.date2,
-      organizer: xss(res.event.organizer),
-      website: xss(res.event.website),
-      event_type: res.event.event_type,
-      event_description: xss(res.event.event_description),
-      photo: xss(res.event.photo),
-      address: xss(res.event.address),
-      address2: xss(res.event.address2),
-      city: xss(res.event.city),
-      state: xss(res.event.state),
-      zip: xss(res.event.zip)
-    })
+//     EventsService.getById(
+//       req.app.get('db'),
+//       Number(req.params.event_id)
+//     )
+//       .then(event => {
+//         if (!event) {
+//           return res.status(404).json({
+//             error: { message: `Event doesn't exist` }
+//           })
+//         }
+//         res.event = event // save the event for the next middleware
+//         next() // don't forget to call next so the next middleware happens!
+//       })
+//       .catch(next)
+//   })
+//   .get((req, res, next) => {
+//     res.json({
+//       id: res.event.id,
+//       title: xss(res.event.title),
+//       date1: res.event.date1,
+//       date2: res.event.date2,
+//       organizer: xss(res.event.organizer),
+//       website: xss(res.event.website),
+//       event_type: res.event.event_type,
+//       event_description: xss(res.event.event_description),
+//       photo: xss(res.event.photo),
+//       address: xss(res.event.address),
+//       address2: xss(res.event.address2),
+//       city: xss(res.event.city),
+//       state: xss(res.event.state),
+//       zip: xss(res.event.zip)
+//     })
 
-  })
-  .delete((req, res, next) => {
-    console.log(3, req.params.event_id)
-    EventsService.deleteEvent(
-      req.app.get('db'),
-      Number(req.params.event_id)
-    )
-      .then(() => {
-        res.status(204).end()
-      })
-      .catch(next)
-  })
-  .patch(jsonParser, (req, res, next) => {
-    console.log(4, req.params.event_id)
+//   })
+//   .delete((req, res, next) => {
+//     console.log(3, req.params.event_id)
+//     EventsService.deleteEvent(
+//       req.app.get('db'),
+//       Number(req.params.event_id)
+//     )
+//       .then(() => {
+//         res.status(204).end()
+//       })
+//       .catch(next)
+//   })
+//   .patch(jsonParser, (req, res, next) => {
+//     console.log(4, req.params.event_id)
 
-    const {
-      title,
-      date1,
-      date2,
-      organizer,
-      website,
-      event_type,
-      event_description,
-      photo,
-      address,
-      address2,
-      city,
-      state,
-      zip
-    } = req.body
-    const eventToUpdate = {
-      title,
-      date1,
-      date2,
-      organizer,
-      website,
-      event_type,
-      event_description,
-      photo,
-      address,
-      address2,
-      city,
-      state,
-      zip
-    }
-    const numberOfValues = Object.values(eventToUpdate).filter(Boolean).length
-    if (numberOfValues === 0) {
+//     const {
+//       title,
+//       date1,
+//       date2,
+//       organizer,
+//       website,
+//       event_type,
+//       event_description,
+//       photo,
+//       address,
+//       address2,
+//       city,
+//       state,
+//       zip
+//     } = req.body
+//     const eventToUpdate = {
+//       title,
+//       date1,
+//       date2,
+//       organizer,
+//       website,
+//       event_type,
+//       event_description,
+//       photo,
+//       address,
+//       address2,
+//       city,
+//       state,
+//       zip
+//     }
+//     const numberOfValues = Object.values(eventToUpdate).filter(Boolean).length
+//     if (numberOfValues === 0) {
 
-      return res.status(400).json({
-        error: {
-          message: `Request body must contain event information.`
-        }
-      })
-    }
+//       return res.status(400).json({
+//         error: {
+//           message: `Request body must contain event information.`
+//         }
+//       })
+//     }
 
-    EventsService.updateEvent(
-      req.app.get('db'),
-      Number(req.params.event_id),
-      eventToUpdate
-    )
-      .then(numRowsAffected => {
-        res.status(204).end()
-      })
-      .catch(next)
-  })
+//     EventsService.updateEvent(
+//       req.app.get('db'),
+//       Number(req.params.event_id),
+//       eventToUpdate
+//     )
+//       .then(numRowsAffected => {
+//         res.status(204).end()
+//       })
+//       .catch(next)
+//   })
 
 module.exports = eventsRouter

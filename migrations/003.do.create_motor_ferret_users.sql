@@ -6,6 +6,7 @@ CREATE TABLE motor_ferret_users (
   start_date DATE DEFAULT now() NOT NULL,
   date_modified TIMESTAMPTZ,
   flagged INTEGER DEFAULT 0,
+  admin INTEGER DEFAULT 0,
   -- 0=FALSE / 1=TRUE
   profile_picture TEXT
 );

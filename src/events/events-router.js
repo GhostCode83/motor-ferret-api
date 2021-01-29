@@ -28,18 +28,18 @@ const serializeEvent = event => ({
 eventsRouter
   .route('/')
   .get((req, res, next) => {
-    console.log('get req body and params', req.body, req.params)
+    // console.log('get req body and params', req.body, req.params)
     const knexInstance = req.app.get('db')
 
     EventsService.getAllEvents(knexInstance)
       .then(events => {
-        console.log(events)
+        // console.log(events)
         res.json(events.map(serializeEvent))
       })
       .catch(next)
   })
   .post(jsonParser, (req, res, next) => {
-    console.log(1, req.params.event_id)
+    // console.log(1, req.body)
     const {
       title,
       date1,
@@ -57,8 +57,7 @@ eventsRouter
 
     const newEvent = {
       title,
-      date1,
-      date2,
+      date1: new Date(date1),
       organizer,
       website,
       event_type,
@@ -71,6 +70,10 @@ eventsRouter
       zip
     }
 
+    if (date2) {
+      newEvent.date2 = date2
+    }
+
     for (const [key, value] of Object.entries(newEvent))
       if (value == null)
         return res.status(400).json({
@@ -81,7 +84,7 @@ eventsRouter
       newEvent
     )
       .then(event => {
-        console.log(event)
+        // console.log(event)
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${event.id}`))
@@ -93,7 +96,7 @@ eventsRouter
 eventsRouter
   .route('/:event_id')
   .all((req, res, next) => {
-    console.log(2, req.params.event_id)
+    // console.log(2, req.params.event_id)
 
     EventsService.getById(
       req.app.get('db'),
@@ -130,7 +133,7 @@ eventsRouter
 
   })
   .delete((req, res, next) => {
-    console.log(3, req.params.event_id)
+    // console.log(3, req.params.event_id)
     EventsService.deleteEvent(
       req.app.get('db'),
       Number(req.params.event_id)
@@ -141,7 +144,7 @@ eventsRouter
       .catch(next)
   })
   .patch(jsonParser, (req, res, next) => {
-    console.log(4, req.params.event_id)
+    // console.log(4, req.params.event_id)
 
     const {
       title,
@@ -173,6 +176,7 @@ eventsRouter
       state,
       zip
     }
+
     const numberOfValues = Object.values(eventToUpdate).filter(Boolean).length
     if (numberOfValues === 0) {
 

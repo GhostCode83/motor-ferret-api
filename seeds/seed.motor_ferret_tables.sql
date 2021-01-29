@@ -28,11 +28,11 @@ VALUES
  'road_racing',
  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros, pulvinar facilisis justo mollis, auctor consequat urna. Morbi a bibendum metus.',
   '[placeholder for event image]',
-  '64 Sutor St.',
+  '7520 Queen Lane',
   '',
-  'Davison',
-  'MI',
-  '48423'
+  'Reynoldsburg',
+  'OH',
+  '43068'
   ),
   ('Pique Gymkhana Tournament'
   ,
@@ -43,11 +43,11 @@ VALUES
  'time_attack',
  'Saw he Greater his gathering land called fruit divided tree land living open signs creepeth firmament lesser. Seasons isn''t also. The land god great our tree. A give had lights seed seas them in day evening. Very saw moved grass fruit fill God seed give lights days. Us, very, don''t.',
   '[placeholder for event image]',
-  '64 Sutor St.',
+  '71 Glen Eagles Ave.',
   '',
-  'Davison',
-  'MI',
-  '48423'
+  'Maumee',
+  'OH',
+  '43537'
   ),
   ('Heed Drag Racing Championship',
  '3/31/2022',
@@ -60,11 +60,11 @@ VALUES
       moveth thing day was good light. Creeping, heaven unto, don''t. Creeping let i 
       it which can''t called multiply For gathered place fruitful image fish sea meat.',
   '[placeholder for event image]',
-  '64 Sutor St.',
+  '7085 Marvon Drive',
   '',
-  'Davison',
-  'MI',
-  '48423'
+  'Lake Worth',
+  'FL',
+  '33460'
   ),
   ('Forest Ohio Rally Cup',
  '4/25/2022',
@@ -74,11 +74,11 @@ VALUES
  'rallying',
  'Fly',
   '[placeholder for event image]',
-  '64 Sutor St.',
+  '157 Manor St.',
   '',
-  'Davison',
-  'MI',
-  '48423'
+  'Pittsburgh',
+  'PA',
+  '15206'
   );
 
 INSERT INTO motor_ferret_users (

@@ -5,8 +5,6 @@ const UsersService = require('./users-service')
 const usersRouter = express.Router()
 const jsonBodyParser = express.json()
 
-
-
 const serializeUser = user => ({
   id: user.id,
   fullname: xss(user.fullname),
@@ -24,27 +22,28 @@ usersRouter
 
     UsersService.getAllUsers(knexInstance)
       .then(users => {
-        console.log(users)
+        // console.log(users)
         res.json(users.map(serializeUser))
       })
       .catch(next)
   })
   //add a new user
   .post(jsonBodyParser, (req, res, next) => {
-    const { password, user_name, full_name, nickname } = req.body
-    for (const field of ['full_name', 'user_name', 'password'])
+    const { password, username, fullname, admin } = req.body
+    console.log(password, username, fullname)
+    for (const field of ['fullname', 'username', 'password'])
       if (!req.body[field])
         return res.status(400).json({
           error: `Missing '${field}' in request body`
         })
     const passwordError = UsersService.validatePassword(password)
-
+    console.log(passwordError)
     if (passwordError)
       return res.status(400).json({ error: passwordError })
 
     UsersService.hasUserWithUserName(
       req.app.get('db'),
-      user_name
+      username
     )
       .then(hasUserWithUserName => {
         if (hasUserWithUserName)
@@ -53,13 +52,13 @@ usersRouter
         return UsersService.hashPassword(password)
           .then(hashedPassword => {
             const newUser = {
-              user_name,
+              username,
               password: hashedPassword,
-              full_name,
-              nickname,
-              date_created: 'now()',
+              fullname,
+              start_date: 'now()',
+              admin
             }
-
+            console.log(newUser)
             return UsersService.insertUser(
               req.app.get('db'),
               newUser
@@ -71,11 +70,8 @@ usersRouter
                   .json(UsersService.serializeUser(user))
               })
           })
-
       })
       .catch(next)
-
-
   })
 
 usersRouter

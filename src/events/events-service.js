@@ -12,7 +12,7 @@ const EventsService = {
       })
   },
   getById(knex, id) {
-    console.log('getById:', id)
+    // console.log('getById:', id)
     return knex
       .from('motor_ferret_events')
       .select('*')

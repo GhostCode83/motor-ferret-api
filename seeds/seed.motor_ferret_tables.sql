@@ -86,24 +86,34 @@ INSERT INTO motor_ferret_users (
   username,
   password,
   profile_picture,
-  flagged
+  flagged,
+  admin, 
+  blocked
     )
 VALUES
 ( 'Alvin Alphonse',
 'AlphonseAdvisor',
 '$2a$04$PSXXQcbJm7sOIgbt74GuFu6I0ZLDqeW50LESaMa/zZT1I.wFCz0rm',
 '[placeholder for user image]',
-0
+'No',
+'No',
+'No'
 ), 
 ( 'Opal Bailey',
 'BaileyBoxer',
 '$2a$04$PSXXQcbJm7sOIgbt74GuFu6I0ZLDqeW50LESaMa/zZT1I.wFCz0rm',
 '[placeholder for user image]',
-0
+'No',
+'No',
+'No'
 ), 
-( 'Jeremy Jeremy',
-'CalypsoClover',
+( 'Randy Douglas',
+'Admin10',
 '$2a$04$PSXXQcbJm7sOIgbt74GuFu6I0ZLDqeW50LESaMa/zZT1I.wFCz0rm',
 '[placeholder for user image]',
-1
-);
+'No',
+'Yes',
+'No'
+),
+
+;

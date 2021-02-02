@@ -3,7 +3,7 @@ const path = require('path')
 const express = require('express')
 const xss = require('xss')
 const EventsService = require('./events-service')
-// const { requireAuth } = require('../middleware/jwt-auth')
+const { requireAuth } = require('../middleware/jwt-auth')
 
 const eventsRouter = express.Router()
 const jsonParser = express.json()
@@ -27,6 +27,7 @@ const serializeEvent = event => ({
 
 eventsRouter
   .route('/')
+  .all(requireAuth)
   .get((req, res, next) => {
     // console.log('get req body and params', req.body, req.params)
     const knexInstance = req.app.get('db')
@@ -95,6 +96,7 @@ eventsRouter
 
 eventsRouter
   .route('/:event_id')
+  .all(requireAuth)
   .all((req, res, next) => {
     // console.log(2, req.params.event_id)
 

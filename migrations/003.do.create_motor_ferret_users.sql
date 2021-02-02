@@ -5,10 +5,10 @@ CREATE TABLE motor_ferret_users (
   password TEXT NOT NULL,
   start_date DATE DEFAULT now() NOT NULL,
   date_modified TIMESTAMPTZ,
-  flagged INTEGER DEFAULT 0,
-  admin INTEGER DEFAULT 0,
-  -- 0=FALSE / 1=TRUE
-  profile_picture TEXT
+  flagged TEXT DEFAULT 'No',
+  admin TEXT DEFAULT 'No',
+  blocked TEXT DEFAULT 'No',
+  profile_picture TEXT 
 );
 
 ALTER TABLE motor_ferret_events

@@ -50,6 +50,11 @@ const UsersService = {
       start_date: new Date(user.start_date),
     }
   },
+  updateUser(knex, id, newUserFields) {
+    return knex('motor_ferret_users')
+      .where({ id })
+      .update(newUserFields)
+  },
 }
 
 module.exports = UsersService

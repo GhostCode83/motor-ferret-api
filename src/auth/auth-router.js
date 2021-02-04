@@ -55,14 +55,16 @@ authRouter
   })
   .post('/signup', jsonBodyParser, (req, res, next) => {
     const { password, username, fullname, admin } = req.body
-    console.log(password, username, fullname)
+    console.log(11, password, username, fullname, admin)
     for (const field of ['fullname', 'username', 'password'])
       if (!req.body[field])
         return res.status(400).json({
           error: `Missing '${field}' in request body`
         })
+
     const passwordError = UsersService.validatePassword(password)
-    console.log(passwordError)
+    console.log(12, passwordError)
+
     if (passwordError)
       return res.status(400).json({ error: passwordError })
 
@@ -71,11 +73,13 @@ authRouter
       username
     )
       .then(hasUserWithUserName => {
+        console.log(13, hasUserWithUserName)
         if (hasUserWithUserName)
           return res.status(400).json({ error: `Username already taken` })
 
         return UsersService.hashPassword(password)
           .then(hashedPassword => {
+            console.log(14, hashedPassword)
             const newUser = {
               username,
               password: hashedPassword,
@@ -83,12 +87,13 @@ authRouter
               start_date: 'now()',
               admin
             }
-            console.log(newUser)
+            console.log(15, newUser)
             return UsersService.insertUser(
               req.app.get('db'),
               newUser
             )
               .then(user => {
+                console.log(16, req.originalUrl, user.id, user)
                 res
                   .status(201)
                   .location(path.posix.join(req.originalUrl, `/${user.id}`))

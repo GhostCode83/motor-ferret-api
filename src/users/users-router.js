@@ -74,9 +74,9 @@ usersRouter
   .patch(jsonBodyParser, (req, res, next) => {
     const { flagged, blocked, admin } = req.body
     const userToUpdate = { flagged, blocked, admin }
-    console.log(userToUpdate)
+    // console.log(userToUpdate)
     const numberOfValues = Object.values(userToUpdate).filter(Boolean).length
-    console.log('number of values: ', numberOfValues)
+    // console.log('number of values: ', numberOfValues)
     if (numberOfValues === 0)
       return res.status(400).json({
         error: {

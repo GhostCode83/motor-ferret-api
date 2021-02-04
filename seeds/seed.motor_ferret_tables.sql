@@ -107,6 +107,14 @@ VALUES
 'No',
 'No'
 ), 
+( 'Jeremy Jeremy',
+'CalypsoClover',
+'$2a$04$PSXXQcbJm7sOIgbt74GuFu6I0ZLDqeW50LESaMa/zZT1I.wFCz0rm',
+'[placeholder for user image]',
+'Yes',
+'No',
+'Yes'
+),
 ( 'Randy Douglas',
 'Admin10',
 '$2a$04$PSXXQcbJm7sOIgbt74GuFu6I0ZLDqeW50LESaMa/zZT1I.wFCz0rm',
@@ -114,6 +122,4 @@ VALUES
 'No',
 'Yes',
 'No'
-),
-
-;
+);

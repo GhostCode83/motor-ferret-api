@@ -271,6 +271,8 @@ describe.only('Events Endpoints', () => {
       afterEach('empty tables', () => db.raw(`TRUNCATE motor_ferret_users, motor_ferret_events RESTART IDENTITY CASCADE`)
         // helpers.cleanTables(db)
       )
+
+
       // beforeEach(() => db
       //   .select('*')
       //   .from('motor_ferret_events')

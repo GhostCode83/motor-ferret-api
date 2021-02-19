@@ -33,6 +33,57 @@ usersRouter
   })
 //add a new user
 
+usersRouter
+  .post('/signup', jsonBodyParser, (req, res, next) => {
+    const { password, username, fullname, admin } = req.body
+    // console.log(11, password, username, fullname, admin)
+    for (const field of ['fullname', 'username', 'password'])
+      if (!req.body[field])
+        return res.status(400).json({
+          error: `Missing '${field}' in request body`
+        })
+
+    const passwordError = UsersService.validatePassword(password)
+    // console.log(12, passwordError)
+
+    if (passwordError)
+      return res.status(400).json({ error: passwordError })
+
+    UsersService.hasUserWithUserName(
+      req.app.get('db'),
+      username
+    )
+      .then(hasUserWithUserName => {
+        // console.log(13, hasUserWithUserName)
+        if (hasUserWithUserName)
+          return res.status(400).json({ error: `Username already taken` })
+
+        return UsersService.hashPassword(password)
+          .then(hashedPassword => {
+            // console.log(14, hashedPassword)
+            const newUser = {
+              username,
+              password: hashedPassword,
+              fullname,
+              start_date: 'now()',
+              admin
+            }
+            // console.log(15, newUser)
+            return UsersService.insertUser(
+              req.app.get('db'),
+              newUser
+            )
+              .then(user => {
+                // console.log(16, req.originalUrl, user.id, user)
+                res
+                  .status(201)
+                  .location(path.posix.join(req.originalUrl, `/${user.id}`))
+                  .json(UsersService.serializeUser(user))
+              })
+          })
+      })
+      .catch(next)
+  })
 
 usersRouter
   .route('/:user_id')
@@ -41,28 +92,7 @@ usersRouter
   .get((req, res) => {
     res.json(serializeUser(res.user))
   })
-  .patch(jsonBodyParser, (req, res, next) => {
-    const { fullname, username, password } = req.body
-    const userToUpdate = { fullname, username, password }
 
-    const numberOfValues = Object.values(userToUpdate).filter(Boolean).length
-    if (numberOfValues === 0)
-      return res.status(400).json({
-        error: {
-          message: `Request body must contain either 'fullname', 'username', or 'password'`
-        }
-      })
-
-    UsersService.updateUser(
-      req.app.get('db'),
-      req.params.user_id,
-      userToUpdate
-    )
-      .then(numRowsAffected => {
-        res.status(204).end()
-      })
-      .catch(next)
-  })
 
 usersRouter
   .route('/admin/:user_id')
@@ -89,7 +119,8 @@ usersRouter
       req.params.user_id,
       userToUpdate
     )
-      .then(numRowsAffected => {
+      .then(response => {
+        console.log(response)
         res.status(204).json()
       })
       .catch(next)

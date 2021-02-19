@@ -9,7 +9,7 @@ const { makeAuthHeader } = require('./test-helpers')
 const helpers = require('./test-helpers')
 
 
-describe('Events Endpoints', () => {
+describe.only('Events Endpoints', () => {
   let db
   let token
 
@@ -253,7 +253,7 @@ describe('Events Endpoints', () => {
     })
 
     context('Given there are events in the database', () => {
-
+      console.log(testUsers, testEvents)
       beforeEach('insert events', () => {
         return db
           .into('motor_ferret_users')

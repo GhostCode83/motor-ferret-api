@@ -73,7 +73,8 @@ describe('Events Endpoints', () => {
           .expect(response => {
             expect(response.body).to.be.a('array')
             for (let i = 0; i < response.body.length; i++) {
-              expect(response.body[i]).to.include.keys('address', 'city', 'id', 'date1', 'event_description', 'event_type', 'organizer', 'photo', 'state', 'website', 'zip'
+              expect(response.body[i]).to.include.keys('address', 'city', 'id', 'date1', 'event_description', 'event_type', 'organizer',
+                'state', 'website', 'zip'
               )
             }
           })
@@ -144,7 +145,6 @@ describe('Events Endpoints', () => {
         "date_created": "2029-01-22T16:28:32.615Z",
         "event_type": "rallying",
         "event_description": "So lights. The Saying face fill seas years it, moveth stars Good. Meat subdue them seed. Can''t place green. For very under Abundantly of moveth thing day was good light. Creeping, heaven unto, don''t. Creeping let i it which can''t called multiply For gathered place fruitful image fish sea meat.",
-        "photo": "placeholder"
       }
 
       return supertest(app)

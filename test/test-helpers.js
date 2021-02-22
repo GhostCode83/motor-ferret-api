@@ -47,7 +47,6 @@ function makeEventsArray() {
       website: 'www.help-me.com',
       address: '123 Street Street',
       address2: '',
-      photo: '',
       event_description: 'this is a test description',
       event_type: 'rallying',
       city: 'Largo',
@@ -57,7 +56,6 @@ function makeEventsArray() {
     {
       id: 2,
       title: 'Track Event',
-      photo: '',
       date1: '2021-02-18T05:00:00.000Z',
       date2: '2021-02-18T05:00:00.000Z',
       date_created: '2020-02-18T05:00:00.000Z',
@@ -74,8 +72,6 @@ function makeEventsArray() {
     {
       id: 3,
       title: 'Track Event',
-
-      photo: '',
       date1: '2021-02-18T05:00:00.000Z',
       date2: '2021-02-18T05:00:00.000Z',
       date_created: '2020-02-18T05:00:00.000Z',
@@ -92,8 +88,6 @@ function makeEventsArray() {
     {
       id: 4,
       title: 'Track Event',
-
-      photo: '',
       date1: '2021-02-18T05:00:00.000Z',
       date2: '2021-02-18T05:00:00.000Z',
       date_created: '2020-02-18T05:00:00.000Z',
@@ -112,13 +106,6 @@ function makeEventsArray() {
 
 
 function makeExpectedEvent(users, event = []) {
-  // const user = users
-  //   .find(user => user.id === event.author)
-  // const eventComments = comments
-  //   .filter(comment => comment.event_id === event.id)
-
-  // const number_of_comments = eventComments.length
-  // const average_comment_rating = calculateAverageCommentRating(eventComments)
 
   return {
     id: event.id,
@@ -129,7 +116,6 @@ function makeExpectedEvent(users, event = []) {
     website: event.website,
     address: event.address,
     address2: event.address2,
-    photo: event.photo,
     event_type: event.event_type,
     event_description: event.event_description,
     city: event.city,
@@ -162,8 +148,7 @@ function makeEventsFixtures() {
   const testUsers = makeUsersArray()
   const testEvents = makeEventsArray(testUsers)
 
-  // const testComments = makeCommentssArray(testUsers, testevents)
-  return { testUsers, testEvents, /* testComments */ }
+  return { testUsers, testEvents, }
 }
 
 function cleanTables(db) {
@@ -178,31 +163,14 @@ function seedUsers(db, users) {
     password: bcrypt.hashSync(user.password, 1)
   }))
   return db.into('motor_ferret_users').insert(preppedUsers).returning('*')
-  // .then(() => {
-  //   return db.raw(
-  //     `SELECT setval('motor_ferret_users_id_seq', ?)`,
-  //     [users[users.length - 1].id],
-  //   )
-  // })
+
 }
 
 function seedEventsTables(db, users, events, /*comments = []*/) {
   return db.transaction(async trx => {
     await seedUsers(trx, users)
     await trx.into('motor_ferret_events').insert(events)
-    /**/
-    // await trx.raw(
-    //   `SELECT setval('motor_ferret_events_id_seq', ?)`,
-    //   [events[events.length - 1].id],
-    // )
-    // if (comments.length) {
-    //   await trx.into('blogful_comments').insert(comments)
-    //   await trx.raw(
-    //     `SELECT setval('blogful_comments_id_seq', ?)`,
-    //     [comments[comments.length - 1].id],
-    //   )
-    // }
-    /* */
+
   }
   )
 }
@@ -230,10 +198,7 @@ module.exports = {
   makeUsersArray,
   makeEventsArray,
   makeExpectedEvent,
-  // makeExpectedThingComments,
   makeMaliciousEvent,
-  // makeCommentsArray,
-
   makeEventsFixtures,
   cleanTables,
   seedEventsTables,

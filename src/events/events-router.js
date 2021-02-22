@@ -17,7 +17,6 @@ const serializeEvent = event => ({
   website: xss(event.website),
   event_type: event.event_type,
   event_description: xss(event.event_description),
-  photo: xss(event.photo),
   address: xss(event.address),
   address2: xss(event.address2),
   city: xss(event.city),
@@ -40,7 +39,6 @@ eventsRouter
       .catch(next)
   })
   .post(jsonParser, (req, res, next) => {
-    // console.log(1, req.body)
     const {
       title,
       date1,
@@ -49,7 +47,6 @@ eventsRouter
       website,
       event_type,
       event_description,
-      photo,
       address,
       address2,
       city,
@@ -63,7 +60,6 @@ eventsRouter
       website,
       event_type,
       event_description,
-      photo,
       address,
       address2,
       city,
@@ -125,7 +121,6 @@ eventsRouter
       website: xss(res.event.website),
       event_type: res.event.event_type,
       event_description: xss(res.event.event_description),
-      photo: xss(res.event.photo),
       address: xss(res.event.address),
       address2: xss(res.event.address2),
       city: xss(res.event.city),

@@ -6,7 +6,6 @@ CREATE TABLE motor_ferret_events (
     organizer TEXT NOT NULL,
     website TEXT NOT NULL,
     event_description TEXT,
-    photo TEXT,
     address TEXT NOT NULL,
     address2 TEXT,
     city TEXT NOT NULL,

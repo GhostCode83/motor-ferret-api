@@ -5,11 +5,11 @@ const supertest = require('supertest')
 const app = require('../src/app')
 const AuthService = require('../src/auth/auth-service')
 const { makeEventsArray } = require('./events.fixtures')
-const { makeAuthHeader } = require('./test-helpers')
+const { makeAuthHeader, seedEventsTables } = require('./test-helpers')
 const helpers = require('./test-helpers')
 
 
-describe.only('Events Endpoints', () => {
+describe('Events Endpoints', () => {
   let db
   let token
 
@@ -208,151 +208,4 @@ describe.only('Events Endpoints', () => {
     })
   })
 
-  describe(`PATCH /api/events/:event_id`, () => {
-    // beforeEach('what"s in the tables?', () => db.raw(`SELECT * FROM motor_ferret_events;`))
-
-    beforeEach('seed database with users and log in the test user', () => {
-      // console.log(db.raw(`SELECT * FROM motor_ferret_events;`))
-
-      // db
-      //   .select('*')
-      //   .from('motor_ferret_events')
-      //   .returning('*')
-      //   .then(console.log)
-
-
-      return helpers.seedUsers(db, testUsers)
-        .then(response => {
-          return supertest(app)
-            .post('/api/auth/login')
-            .send(testUsers[0])
-            .expect(response => {
-              token = response.body.authToken
-            })
-        })
-    })
-
-    afterEach('empty tables', () => db.raw(`TRUNCATE motor_ferret_users, motor_ferret_events RESTART IDENTITY CASCADE`)
-      // helpers.cleanTables(db)
-    )
-
-
-
-    context(`Given no events`, () => {
-      beforeEach(() => db
-        .select('*')
-        .from('motor_ferret_events')
-        .returning('*')
-        .then(console.log)
-      )
-
-      it(`responds with 404`, () => {
-        const eventId = 123456
-        return supertest(app)
-          .delete(`/api/events/${eventId}`)
-          .set('Authorization', 'bearer ' + token)
-          .expect(404, { error: { message: `Event doesn't exist` } })
-      })
-    })
-
-    context('Given there are events in the database', () => {
-      console.log(testUsers, testEvents)
-      beforeEach('insert events', () => {
-        return db
-          .into('motor_ferret_users')
-          .insert(testUsers)
-          .then(() => {
-            return db
-              .into('motor_ferret_events')
-              .insert(testEvents)
-          })
-      })
-
-      afterEach('empty tables', () => db.raw(`TRUNCATE motor_ferret_users, motor_ferret_events RESTART IDENTITY CASCADE`)
-        // helpers.cleanTables(db)
-      )
-
-
-      // beforeEach(() => db
-      //   .select('*')
-      //   .from('motor_ferret_events')
-      //   .returning('*')
-      //   .then(console.log)
-      // )
-      // afterEach(() => db
-      //   .select('*')
-      //   .from('motor_ferret_events')
-      //   .returning('*')
-      //   .then(console.log)
-      // )
-
-      it('responds with 204 and updates the event', () => {
-        beforeEach(() => db
-          .select('*')
-          .from('motor_ferret_events')
-          .returning('*')
-          .then(console.log)
-        )
-
-        const idToUpdate = 2
-        const updateEvent = {
-          title: 'Trackity Track Event'
-        }
-        const expectedEvent = {
-          ...testEvents[idToUpdate - 1],
-          ...updateEvent
-        }
-        return supertest(app)
-          .patch(`/api/events/${idToUpdate}`)
-          .set('Authorization', 'bearer ' + token)
-          .send(updateEvent)
-          .expect(204)
-          .then(res =>
-            supertest(app)
-              .get(`/api/events/${idToUpdate}`)
-              .expect(expectedEvent)
-          )
-      })
-
-      it(`responds with 400 when no required fields supplied`, () => {
-        const idToUpdate = 2
-        return supertest(app)
-          .patch(`/api/events/${idToUpdate}`)
-          .set('Authorization', 'bearer ' + token)
-
-          .send({ irrelevantField: 'foo' })
-          .expect(400, {
-            error: {
-              message: `Request body must contain either 'title', 'address' or 'website'`
-            }
-          })
-      })
-
-      it(`responds with 204 when updating only a subset of fields`, () => {
-        const idToUpdate = 2
-        const updateEvent = {
-          title: 'updated event title',
-        }
-        const expectedEvent = {
-          ...testEvents[idToUpdate - 1],
-          ...updateEvent
-        }
-
-        return supertest(app)
-          .patch(`/api/events/${idToUpdate}`)
-          .set('Authorization', 'bearer ' + token)
-
-          .send({
-            ...updateEvent,
-            fieldToIgnore: 'should not be in GET response'
-          })
-          .expect(204)
-          .then(res =>
-            supertest(app)
-              .get(`/api/events/${idToUpdate}`)
-              .expect(expectedEvent)
-          )
-      })
-    })
-  })
 })

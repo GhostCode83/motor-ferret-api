@@ -19,7 +19,6 @@ const serializeUser = user => ({
 
 usersRouter
   .route('/')
-  //get all users
   .all(requireAuth)
   .get((req, res, next) => {
     const knexInstance = req.app.get('db')
@@ -98,14 +97,11 @@ usersRouter
   .route('/admin/:user_id')
   .all(requireAuth)
   .all(checkUserExists)
-  .get((req, res) => {
-    res.json(serializeUser(res.user))
-  })
   .patch(jsonBodyParser, (req, res, next) => {
     const { flagged, blocked, admin } = req.body
-    const userToUpdate = { flagged, blocked, admin }
+    const userValuesToUpdate = { flagged, blocked, admin }
     // console.log(userToUpdate)
-    const numberOfValues = Object.values(userToUpdate).filter(Boolean).length
+    const numberOfValues = Object.values(userValuesToUpdate).filter(Boolean).length
     // console.log('number of values: ', numberOfValues)
     if (numberOfValues === 0)
       return res.status(400).json({
@@ -135,7 +131,9 @@ async function checkUserExists(req, res, next) {
 
     if (!user)
       return res.status(404).json({
-        error: `User doesn't exist`
+        error: {
+          "message": "User doesn't exist"
+        }
       })
 
     res.user = user

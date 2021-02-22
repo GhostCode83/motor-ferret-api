@@ -145,59 +145,6 @@ eventsRouter
       })
       .catch(next)
   })
-  .patch(jsonParser, (req, res, next) => {
-    // console.log(4, req.params.event_id)
 
-    const {
-      title,
-      date1,
-      date2,
-      organizer,
-      website,
-      event_type,
-      event_description,
-      photo,
-      address,
-      address2,
-      city,
-      state,
-      zip
-    } = req.body
-    const eventToUpdate = {
-      title,
-      date1,
-      date2,
-      organizer,
-      website,
-      event_type,
-      event_description,
-      photo,
-      address,
-      address2,
-      city,
-      state,
-      zip
-    }
-
-    const numberOfValues = Object.values(eventToUpdate).filter(Boolean).length
-    if (numberOfValues === 0) {
-
-      return res.status(400).json({
-        error: {
-          message: `Request body must contain event information.`
-        }
-      })
-    }
-
-    EventsService.updateEvent(
-      req.app.get('db'),
-      Number(req.params.event_id),
-      eventToUpdate
-    )
-      .then(numRowsAffected => {
-        res.status(204).end()
-      })
-      .catch(next)
-  })
 
 module.exports = eventsRouter

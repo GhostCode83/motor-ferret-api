@@ -16,7 +16,7 @@ function makeUsersArray() {
       password: 'password',
       username: 'test-user-2',
       start_date: '2029-01-22T16:28:32.615Z',
-
+      blocked: "Yes"
     },
     {
       id: 3,
@@ -24,7 +24,6 @@ function makeUsersArray() {
       password: 'password',
       username: 'test-user-3',
       start_date: '2029-01-22T16:28:32.615Z',
-
     },
     {
       id: 4,
@@ -32,7 +31,6 @@ function makeUsersArray() {
       password: 'password',
       username: 'test-user-4',
       start_date: '2029-01-22T16:28:32.615Z',
-
     },
   ]
 }
@@ -180,15 +178,12 @@ function seedUsers(db, users) {
     password: bcrypt.hashSync(user.password, 1)
   }))
   return db.into('motor_ferret_users').insert(preppedUsers).returning('*')
-    /* */
-    .then(() => {
-      return db.raw(
-        `SELECT setval('motor_ferret_users_id_seq', ?)`,
-        [users[users.length - 1].id],
-      )
-    }
-      /* */
-    )
+  // .then(() => {
+  //   return db.raw(
+  //     `SELECT setval('motor_ferret_users_id_seq', ?)`,
+  //     [users[users.length - 1].id],
+  //   )
+  // })
 }
 
 function seedEventsTables(db, users, events, /*comments = []*/) {
